@@ -1,0 +1,39 @@
+# Archivos de entorno
+.env
+*.env
+
+# Archivos de configuración de sistema
+.DS_Store
+Thumbs.db
+
+# Cache de Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Archivos de logs
+*.log
+
+# Dependencias (si usás virtualenv)
+venv/
+.env/
+.venv/
+env310
+
+# Archivos temporales o de editor
+*.swp
+*~
+.idea/
+.vscode/
+*.bak
+
+# Salidas del sistema o compilación
+dist/
+build/
+*.egg-info/
+
+# Archivos específicos de Supabase (si usás el CLI local)
+.supabase/
+
+# Archivos de ejecución local
+*.sqlite

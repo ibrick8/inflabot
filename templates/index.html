@@ -20,7 +20,7 @@
       margin-bottom: 2rem;
     }
     header img.logo {
-      height: 200px;
+      height: 60px;
       margin-bottom: 1rem;
     }
     ul {
@@ -42,13 +42,15 @@
 </head>
 <body>
   <header>
-    <img class="logo" src="assets/logo_transparent.png" alt="Inflabot logo" />
+    <img class="logo" src="assets/logo.png" alt="Inflabot logo" />
     <h1>Informes de inflación</h1>
   </header>
 
   <main>
     <ul>
-      item
+      {% for informe in informes %}
+        <li><a href="{{ informe.link }}">{{ informe.fecha }} - {{ informe.titulo }}</a></li>
+      {% endfor %}
     </ul>
   </main>
 </body>
