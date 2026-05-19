@@ -8,6 +8,7 @@ from domain.entidades.PosteoEntity import PosteoEntity
 from domain.interfaces.IUseCase import IUseCase
 from application.DistribucionPreciosCategorias import DistribucionPreciosCategorias
 from application.VariacionSemanalTipoArticulos import VariacionSemanalTipoArticulos
+from application.CanastaHoy import CanastaHoy
 from application.GenerateIndex import GenerateIndex
 from infraestructure.db.models import Session
 from infraestructure.db.PostgresRepository import PostgresRepository
@@ -46,17 +47,18 @@ def main(posteo_id: UUID):
     tipos = {
         "DistribucionPreciosCategorias": DistribucionPreciosCategorias,
         "VariacionSemanalTipoArticulos": VariacionSemanalTipoArticulos,
+        "CanastaHoy": CanastaHoy,
     }
-    
-    file=f"{OUTPUT_DIR}/posts/{generar_nombre_archivo(posteo)}"
+    filename = generar_nombre_archivo(posteo)
+    file = f"{OUTPUT_DIR}/posts/{filename}"
     usecase: IUseCase = tipos[posteo.tipo](logger)
-    post_page = usecase.run(posteo)
+    post_page = usecase.run(posteo, filename)
     save(post_page, file)
     logger.info(f"{file} generado.")
 
-    index_page = GenerateIndex(logger).run("index")
-    save(index_page, f"{OUTPUT_DIR}/index.html")
-    logger.info("Index actualizado.")
+    #index_page = GenerateIndex(logger).run("index")
+    #save(index_page, f"{OUTPUT_DIR}/index.html")
+    #logger.info("Index actualizado.")
     
 
 if __name__ == "__main__":

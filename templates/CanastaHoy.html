@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>{{ titulo }} | {{ resumen.canasta_nombre }} {{ metadata_publicacion.fecha_generacion }}</title>
+
+<meta name="description" content="{{ bajada }}">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ canonical_url }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{ titulo }}">
+<meta property="og:description" content="{{ bajada }}">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:image" content="{{ og_image_url }}">
+<meta property="og:site_name" content="Tu Proyecto Económico">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ titulo }}">
+<meta name="twitter:description" content="{{ bajada }}">
+<meta name="twitter:image" content="{{ og_image_url }}">
+<meta name="twitter:creator" content="@tuusuario">
+
+<!-- JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Report",
+  "name": "{{ titulo }}",
+  "description": "{{ bajada }}",
+  "datePublished": "{{ metadata_publicacion.fecha_generacion }}",
+  "inLanguage": "es",
+  "author": {
+    "@type": "Ibrick",
+    "name": "Inflabot"
+  },
+  "about": {
+    "@type": "Dataset",
+    "name": "{{ resumen.canasta_nombre }}",
+    "variableMeasured": [
+      "Costo total",
+      "Composición por categoría",
+      "Incidencia porcentual"
+    ]
+  }
+}
+</script>
+
+<style>
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #f9fafb;
+    margin: 0;
+    color: #111827;
+}
+
+.container {
+    max-width: 860px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-top: 40px;
+    font-size: 22px;
+}
+
+.total {
+    font-size: 44px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+    margin-top: 30px;
+}
+
+img {
+    width: 100%;
+    border-radius: 12px;
+    margin: 30px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+th {
+    background: #f3f4f6;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>{{ titulo }}</h1>
+
+<p>{{ bajada }}</p>
+
+<div class="total">
+${{ "{:,.2f}".format(resumen.total) }} {{ resumen.moneda }}
+</div>
+
+<small>Fecha de publicación: {{ metadata_publicacion.fecha_generacion }}</small>
+
+<h2>¿Cuánto cuesta la {{ resumen.canasta_nombre }}?</h2>
+
+<p>
+El costo total de la {{ resumen.canasta_nombre }} se ubica en
+<strong>${{ "{:,.2f}".format(resumen.total) }} {{ resumen.moneda }}</strong>
+en el período analizado.
+</p>
+
+<h2>Composición del gasto</h2>
+
+<img src="../assets/{{ graficas.composicion_por_categoria_plot_file }}" alt="Gráfico de Composicion por categoria">
+<img src="../assets/{{ graficas.concentracion_acumulada_plot_file }}" alt="Gráfico de concentracion acumulada">
+
+<div class="card">
+<h2>Insights clave</h2>
+<ul>
+{% for insight in insights %}
+<li>{{ insight }}</li>
+{% endfor %}
+</ul>
+</div>
+
+<div class="card">
+<h2>Detalle por categoría</h2>
+<table>
+<tr>
+<th>Categoría</th>
+<th>Gasto</th>
+<th>Incidencia</th>
+</tr>
+
+{% for item in composicion.ranking | sort(attribute="incidencia_pct", reverse=True) %}
+<tr>
+<td>{{ item.categoria }}</td>
+<td>${{ "{:,.2f}".format(item.gasto) }}</td>
+<td>{{ item.incidencia_pct }}%</td>
+</tr>
+{% endfor %}
+
+</table>
+</div>
+
+<div class="card">
+<h2>Componentes físicos de la canasta</h2>
+<table>
+<tr>
+<th>Categoría</th>
+<th>Cantidad</th>
+<th>Unidad</th>
+</tr>
+
+{% for comp in componentes_canasta %}
+<tr>
+<td>{{ comp.categoria }}</td>
+<td>{{ comp.cantidad }}</td>
+<td>{{ comp.unidad }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+</div>
+
+</body>
+</html>
