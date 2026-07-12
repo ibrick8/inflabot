@@ -19,7 +19,7 @@ def _copiar_imagen(filename: str):
     return filename
 
 
-class CanastaHoy(IUseCase):
+class InflacionCanasta(IUseCase):
 
     def __init__(self, logger):
         self.logger = logger
@@ -29,15 +29,15 @@ class CanastaHoy(IUseCase):
         template = env.get_template(f"{posteo.tipo}.html")
 
         images = posteo.cuerpo.get("images") or {}
-        composicion = _copiar_imagen(images.get("composicion_por_categoria_plot_file"))
-        concentracion = _copiar_imagen(images.get("concentracion_acumulada_plot_file"))
+        inflacion_plot = _copiar_imagen(images.get("inflacion_por_categoria_plot_file"))
+        comparacion_plot = _copiar_imagen(images.get("comparacion_gastos_plot_file"))
 
         return template.render(
             **posteo.cuerpo,
             canonical_url=f"{SITE_BASE_URL}/posts/{filename}",
-            og_image_url=f"{SITE_BASE_URL}/assets/{composicion}" if composicion else None,
+            og_image_url=f"{SITE_BASE_URL}/assets/{inflacion_plot}" if inflacion_plot else None,
             graficas={
-                "composicion_por_categoria_plot_file": composicion,
-                "concentracion_acumulada_plot_file": concentracion,
+                "inflacion_por_categoria_plot_file": inflacion_plot,
+                "comparacion_gastos_plot_file": comparacion_plot,
             },
         )

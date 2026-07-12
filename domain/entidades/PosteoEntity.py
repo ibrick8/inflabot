@@ -1,11 +1,12 @@
-from typing import List, Any
+from typing import Any
 from dataclasses import dataclass
 from uuid import UUID
 from datetime import date
+
 
 @dataclass
 class PosteoEntity:
     id: UUID
     fecha: date
-    cuerpo: List[Any]
+    cuerpo: Any
     tipo: str
