@@ -9,6 +9,7 @@ from domain.entidades.PosteoEntity import PosteoEntity
 from domain.interfaces.IUseCase import IUseCase
 from application.CanastaHoy import CanastaHoy
 from application.InflacionCanasta import InflacionCanasta
+from application.CostoImpuestosCanasta import CostoImpuestosCanasta
 from application.GenerateIndex import GenerateIndex
 from infraestructure.db.models import Session
 from infraestructure.db.PostgresRepository import PostgresRepository
@@ -44,6 +45,7 @@ def save(html: str, output_path: str):
 TIPOS = {
     "CanastaHoy": CanastaHoy,
     "InflacionCanasta": InflacionCanasta,
+    "CostoImpuestosCanasta": CostoImpuestosCanasta,
 }
 
 
